@@ -41,7 +41,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Docker Build Image
-        run: mvn spring-boot:build-image -Dspring-boot.build-image.imageName=${{ secrets.DOCKER_USERNAME }}/movie-api
+      - run: mvn spring-boot:build-image -Dspring-boot.build-image.imageName=${{ secrets.DOCKER_USERNAME }}/movie-api
         #run: mvn compile com.google.cloud.tools:jib-maven-plugin:3.4.3:build -Dimage=${{ secrets.DOCKER_USERNAME }}/movie-api
 
       - name: Docker Push Image
