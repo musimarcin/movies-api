@@ -47,7 +47,7 @@ jobs:
       - name: Docker Push Image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/movies-api:latest
 
-        #secrets set in github repo settings (security actions)
+        #secrets set in github repo settings (security actions),
         #jib plugin automatically pushes image
         #set configuration in jib plugin in pom.xml <to><image>docker.io/username/docker-name
 
