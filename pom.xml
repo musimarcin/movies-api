@@ -101,6 +101,11 @@
 			<artifactId>postgresql</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.zalando</groupId>
+			<artifactId>problem-spring-web-starter</artifactId>
+			<version>0.29.1</version>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

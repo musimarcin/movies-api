@@ -7,8 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.jdbc.AutoConfigureDataJdbc;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -83,5 +81,70 @@ class MovieControllerTest {
                 .andExpect(jsonPath("$.totalPages", equalTo(totalPages)))
                 .andExpect(jsonPath("$.currentPage", equalTo(currentPage)))
                 .andExpect(jsonPath("$.hasNext", equalTo(hasNext)));
+    }
+
+    //test with successful creation
+    @Test
+    void testCreateMovie() throws Exception {
+        this.mvc.perform(
+                        post("/api/movies")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("""
+                                {
+                                    "title": "Testing Movie",
+                                    "releaseYear": 1777
+                                }
+                                """)
+                )
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id", notNullValue()))
+                .andExpect(jsonPath("$.title", is("Testing Movie")))
+                .andExpect(jsonPath("$.releaseYear", equalTo(1777)));
+    }
+
+    //test unsuccessful
+
+    @Test
+    void testCreateMovieWithoutYear() throws Exception {
+        this.mvc.perform(
+                        post("/api/movies")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("""
+                                {
+                                    "title": "Testing Movie 2"
+                                }
+                                """)
+                )
+                .andExpect(status().isBadRequest())
+                .andExpect(header().string("Content-Type", is("application/problem+json")))
+                .andExpect(jsonPath("$.type", is("https://zalando.github.io/problem/constraint-violation")))
+                .andExpect(jsonPath("$.title", is("Constraint Violation")))
+                .andExpect(jsonPath("$.status", equalTo(400)))
+                .andExpect(jsonPath("$.violations", hasSize(1)))
+                .andExpect(jsonPath("$.violations[0].field", is("releaseYear")))
+                .andExpect(jsonPath("$.violations[0].message", is("Fill in release year")))
+                .andReturn();
+    }
+
+    @Test
+    void testCreateMovieWithoutTitle() throws Exception {
+        this.mvc.perform(
+                        post("/api/movies")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("""
+                                {
+                                    "releaseYear": 1888
+                                }
+                                """)
+                )
+                .andExpect(status().isBadRequest())
+                .andExpect(header().string("Content-Type", is("application/problem+json")))
+                .andExpect(jsonPath("$.type", is("https://zalando.github.io/problem/constraint-violation")))
+                .andExpect(jsonPath("$.title", is("Constraint Violation")))
+                .andExpect(jsonPath("$.status", is(400)))
+                .andExpect(jsonPath("$.violations", hasSize(1)))
+                .andExpect(jsonPath("$.violations[0].field", is("title")))
+                .andExpect(jsonPath("$.violations[0].message", is("Fill in title")))
+                .andReturn();
     }
 }
