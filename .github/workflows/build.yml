@@ -17,11 +17,11 @@ on:
 
 jobs:
   build:
-    name: Build movietest-api
+    name: Build movies-api
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./movie-test
+        working-directory: ./movies-api
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 17
