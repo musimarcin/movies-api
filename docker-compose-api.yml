@@ -14,3 +14,15 @@ services:
     restart: always
     depends_on:
       - movies-db
+
+
+#  movies-ui-nextjs:
+#    container_name: movies-ui-nextjs
+#    build:
+#      context: movies-ui-nextjs
+#      dockerfile: Dockerfile
+#    ports:
+#      - "13000:3000"
+#    environment:
+#      SERVER_SIDE_API_BASE_URL: http://movies-api:8080
+#      CLIENT_SIDE_API_BASE_URL: http://localhost:18080
