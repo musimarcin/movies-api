@@ -28,6 +28,7 @@
 	</scm>
 	<properties>
 		<java.version>17</java.version>
+		<docker.username>musimarc</docker.username>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -135,7 +136,7 @@
 				<version>3.2.9</version>
 				<configuration>
 					<image>
-						<name>musimarc/movies-api</name> <!-- this is used locally, first build image with dockerusername -->
+						<name>${docker.username}/movies-api</name>
 						<tags>
 							<tag>latest</tag>
 							<tag>0.0.1</tag>
@@ -157,7 +158,13 @@
 					<from>
 						<image>openjdk:17-jdk</image>
 					</from>
-
+					<to>
+						<image>${docker.username}/movies-api-jib</image>
+						<tags>
+							<tag>latest</tag>
+							<tag>0.0.1</tag>
+						</tags>
+					</to>
 					<container>
 						<mainClass>com.movies_api.MoviesApiApplication</mainClass>
 						<ports>
