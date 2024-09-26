@@ -135,7 +135,11 @@
 				<version>3.2.9</version>
 				<configuration>
 					<image>
-						<name>${docker.username}/movies-api</name>
+						<name>musimarc/movies-api</name>
+						<tags>
+							<tag>latest</tag>
+							<tag>0.0.1</tag>
+						</tags>
 					</image>
 					<excludes>
 						<exclude>
