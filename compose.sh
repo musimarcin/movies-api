@@ -7,6 +7,18 @@ function build_api() {
     mvn clean install -DskipTests
 }
 
+function start_db() {
+  echo "Starting db docker compose"
+  docker-compose -f ${dc_db} up -d
+  docker-compose -f ${dc_db} logs -f
+}
+
+function stop_db() {
+  echo "Stopping and removing docker container"
+  docker-compose -f ${dc_db} stop
+  docker-compose -f ${dc_db} rm -f
+}
+
 function start() {
   build_api
   echo "Starting docker containers"
