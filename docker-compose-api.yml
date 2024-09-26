@@ -1,0 +1,16 @@
+services:
+  movies-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.layered
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_DATASOURCE_URL: jdbc:postgresql://movies-db:5432/appdb
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
+    ports:
+      - "18080:8080"
+    restart: always
+    depends_on:
+      - movies-db
