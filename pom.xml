@@ -135,13 +135,13 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>3.2.9</version>
 				<configuration>
-					<image>
+				<!--	<image>
 						<name>${docker.username}/movies-api</name>
 						<tags>
 							<tag>latest</tag>
 							<tag>0.0.1</tag>
 						</tags>
-					</image>
+					</image> -->
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
@@ -155,7 +155,7 @@
 				<artifactId>jib-maven-plugin</artifactId>
 				<version>3.4.3</version>
 				<configuration>
-					<from>
+				<!--	<from>
 						<image>openjdk:17-jdk</image>
 					</from>
 					<to>
@@ -164,7 +164,7 @@
 							<tag>latest</tag>
 							<tag>0.0.1</tag>
 						</tags>
-					</to>
+					</to> -->
 					<container>
 						<mainClass>com.movies_api.MoviesApiApplication</mainClass>
 						<ports>
