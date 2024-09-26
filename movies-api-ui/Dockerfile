@@ -8,7 +8,7 @@ RUN npm ci
 # Stage 2: Build the application
 FROM node:16-alpine AS builder
 WORKDIR /app
-COPY . .
+COPY .. .
 COPY --from=deps /app/node_modules ./node_modules
 RUN npm run build
 
