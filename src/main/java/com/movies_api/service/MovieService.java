@@ -3,6 +3,7 @@ package com.movies_api.service;
 import com.movies_api.data.*;
 import com.movies_api.data.entity.Movie;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,13 +18,16 @@ import java.time.Instant;
 @RequiredArgsConstructor
 public class MovieService {
 
+    @Autowired
     private final MovieRepo movieRepo;
+    @Autowired
     private final MovieMapper movieMapper;
 
     public Pageable getPage(Integer page) {
         int pageNo = page < 1 ? 0 : page - 1;
         return PageRequest.of(pageNo, 10, Sort.Direction.ASC, "releaseYear");
     }
+
     @Transactional(readOnly = true)
     public MoviesDTO getMovies(Integer page) {
         Page<MovieDTO> moviePage = movieRepo.findMovies(getPage(page));

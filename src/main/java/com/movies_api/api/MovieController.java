@@ -6,6 +6,7 @@ import com.movies_api.data.MoviesDTO;
 import com.movies_api.service.MovieService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/movies")
 @RequiredArgsConstructor
 public class MovieController {
+
+    @Autowired
     private final MovieService movieService;
 
     @GetMapping
