@@ -135,7 +135,7 @@
 				<version>3.2.9</version>
 				<configuration>
 					<image>
-						<name>${{ secrets.DOCKER_USERNAME }}/movies-api</name>
+						<name>${docker.username}/movies-api</name>
 					</image>
 					<excludes>
 						<exclude>
