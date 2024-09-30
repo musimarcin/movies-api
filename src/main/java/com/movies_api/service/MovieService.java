@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -46,5 +47,12 @@ public class MovieService {
         return movieMapper.toDTO(savedMovie);
     }
 
+    public boolean deleteMovie(String title) {
+        Optional<Movie> movie = movieRepo.findByTitle(title);
+        if (movie.isPresent()) {
+            movieRepo.delete(movie.get());
+            return true;
+        } else return false;
+    }
 }
 

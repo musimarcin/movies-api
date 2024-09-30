@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface MovieRepo extends JpaRepository<Movie, Long> {
 
@@ -27,5 +29,7 @@ public interface MovieRepo extends JpaRepository<Movie, Long> {
 
     //with interface based projection
     //Page<MovieVM> findByTitleContainingIgnoreCase(String query, Pageable pageable);
+
+    Optional<Movie> findByTitle(String title);
 
 }

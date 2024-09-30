@@ -8,7 +8,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 
 
 @RestController
@@ -32,6 +35,14 @@ public class MovieController {
     @ResponseStatus(HttpStatus.CREATED)
     public MovieDTO createMovie(@RequestBody @Valid CreateMovieRequest request) {
         return movieService.createMovie(request);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> deleteMovie(@RequestBody HashMap<String, String> request) {
+        String title = request.get("title");
+        boolean isDeleted = movieService.deleteMovie(title);
+        if (isDeleted) return ResponseEntity.ok("Movie deleted successfully");
+        else return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movie nto found");
     }
 
 }
