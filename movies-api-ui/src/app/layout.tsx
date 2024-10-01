@@ -49,6 +49,9 @@ export default function RootLayout({
                   <li className="nav-item">
                     <a className="nav-link" href="delete">Delete movie</a>
                   </li>
+                  <li className="nav-item">
+                    <a className="nav-link" href="search">Search movie</a>
+                  </li>
                 </ul>
               </div>
             </div>

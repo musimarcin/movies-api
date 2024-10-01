@@ -17,8 +17,7 @@ import java.time.Instant;
 public class Movie {
 
     @Id
-    @SequenceGenerator(name = "movie_id_gen", sequenceName = "movie_id_seq")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "movie_id_gen")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
     private String title;

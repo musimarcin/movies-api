@@ -11,18 +11,18 @@ export default function Add() {
        const addMovie = async (e: React.FormEvent<HTMLFormElement>) => {
            e.preventDefault();
 
-           const movie = {
+           const payload = {
                title,
                releaseYear,
            };
 
         try {
-            const response = await fetch("http://localhost:18080/api/movies", {
+            const response = await fetch("http://localhost:8080/api/movies", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json" ,
                     },
-                    body: JSON.stringify(movie),
+                    body: JSON.stringify(payload),
                 });
 
                 if (!response.ok) {
@@ -55,7 +55,7 @@ export default function Add() {
                 <label className="form-label">Description</label>
                 <input className="form-control" value={description} onChange={(e) => setDescription(e.target.value)}/>
               </div>
-              <button type="submit" className="btn btn-primary">Submit</button>
+              <button type="submit" className="btn btn-primary">Add</button>
               {message && <div className="mt-3 alert alert-info">{message}</div>}
             </form>
         </div>

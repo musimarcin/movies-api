@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /*
 one method to set container*/
 @TestPropertySource(properties = {
-        "spring.datasource.url=jdbc:tc:postgresql:14-alpine:///moviedb"
+        "spring.datasource.url=jdbc:postgresql://localhost:5432/appdb"
 })
 
 //second method to set container (with @Container and @DynamicPropertySource)

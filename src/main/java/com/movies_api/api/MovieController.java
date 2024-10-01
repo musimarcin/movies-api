@@ -42,7 +42,7 @@ public class MovieController {
         String title = request.get("title");
         boolean isDeleted = movieService.deleteMovie(title);
         if (isDeleted) return ResponseEntity.ok("Movie deleted successfully");
-        else return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movie nto found");
+        else return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movie not found");
     }
 
 }
