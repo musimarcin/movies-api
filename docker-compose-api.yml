@@ -16,13 +16,13 @@ services:
       - movies-db
 
 
-#  movies-api-ui:
-#    container_name: movies-api-ui
-#    build:
-#      context: movies-api-ui
-#      dockerfile: Dockerfile
-#    ports:
-#      - "13000:3000"
-#    environment:
-#      SERVER_SIDE_API_BASE_URL: http://movies-api:8080
-#      CLIENT_SIDE_API_BASE_URL: http://localhost:8080
+  movies-api-ui:
+    container_name: movies-api-ui
+    build:
+      context: movies-api-ui
+      dockerfile: Dockerfile
+    ports:
+      - "13000:3000"
+    environment:
+      SERVER_URL: http://movie-api:8080
+      CLIENT_URL: http://localhost:18080

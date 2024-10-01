@@ -2,23 +2,42 @@
 
 import { useState, useEffect } from "react";
 import MovieList from './components/MovieList';
+//import {fetchMoviesApi} from './components/api'
+
+import getConfig from 'next/config'
+const { serverRuntimeConfig, publicRuntimeConfig } = getConfig()
+const API_URL = "http://localhost:8080";
+
+const getApiUrl = () => {
+    const apiUrl =
+    serverRuntimeConfig.API_URL || publicRuntimeConfig.API_URL;
+    if (!apiUrl) {
+        console.error('API URL is not defined');
+        throw new Error('API URL is not defined');
+    }
+
+    return apiUrl;
+}
 
 export default function Home() {
     const [movies, setMovies] = useState<any[]>([]);
     const [page, setPage] = useState<number>(1);
     const [error, setError] = useState<string | null>(null);
 
+
     useEffect(() => {
         const fetchMovies = async () => {
             try {
-                const res = await fetch(`http://localhost:8080/api/movies?page=${page}`, {
+                const apiUrl = getApiUrl();
+                const res = await fetch(`${apiUrl}/api/movies?page=${page}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    cache: "no-store",
+                    cache: "no-store"
                 });
-                const data = await res.json();
+                //const res = await fetchMoviesApi(page)
+                const data = await res.json()
 
                 if (!res.ok) {
                     throw new Error("Failed to load movies");
@@ -26,8 +45,8 @@ export default function Home() {
 
                 setMovies(data.movieList);
             } catch (error) {
-                setError(error.message);
-                console.log(error);
+                if (error instanceof Error) console.error('Fetch error:', error.message);
+                else console.error('An unknown error occurred:', error);
             }
         };
 
@@ -50,6 +69,8 @@ export default function Home() {
         </div>
     );
 }
+
+
 
 //SERVER SIDE VERSION NOT WORKING LOCALLY: ENCONNREFUSED
 /*
