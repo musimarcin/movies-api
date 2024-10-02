@@ -4,13 +4,13 @@ import { useState, useEffect } from "react";
 import MovieList from './components/MovieList';
 //import {fetchMoviesApi} from './components/api'
 
-import getConfig from 'next/config'
-const { serverRuntimeConfig, publicRuntimeConfig } = getConfig()
-const API_URL = "http://localhost:8080";
+//const API_URL = "http://localhost:8080";
 
 const getApiUrl = () => {
     const apiUrl =
-    serverRuntimeConfig.API_URL || publicRuntimeConfig.API_URL;
+    process.env.NEXT_PUBLIC_SERVER_URL || process.env.NEXT_PUBLIC_CLIENT_URL
+    console.log("Server URL:", process.env.NEXT_PUBLIC_SERVER_URL);
+    console.log("Client URL:", process.env.NEXT_PUBLIC_CLIENT_URL);
     if (!apiUrl) {
         console.error('API URL is not defined');
         throw new Error('API URL is not defined');
