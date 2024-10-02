@@ -1,9 +1,19 @@
 import axios, {AxiosResponse} from "axios";
 import {MovieResponse} from "./Movies";
 
-const API_URL = "http://localhost:8080";
+const getApiUrl = () => {
+    const apiUrl =
+    process.env.NEXT_PUBLIC_SERVER_URL || process.env.NEXT_PUBLIC_CLIENT_URL
+    if (!apiUrl) {
+        console.error('API URL is not defined');
+        throw new Error('API URL is not defined');
+    }
+
+    return apiUrl;
+}
 
 export const fetchMoviesApi = async (page: number) => {
-    const res = await axios.get(`${API_URL}/api/movies?page=${page}`);
-    return res.data;
+    const apiUrl = getApiUrl();
+    const res = await axios.get(`${apiUrl}/api/movies?page=${page}`);
+    return res.data
 }

@@ -2,15 +2,13 @@
 
 import { useState, useEffect } from "react";
 import MovieList from './components/MovieList';
-//import {fetchMoviesApi} from './components/api'
+import {fetchMoviesApi} from './components/api'
 
 //const API_URL = "http://localhost:8080";
 
 const getApiUrl = () => {
     const apiUrl =
     process.env.NEXT_PUBLIC_SERVER_URL || process.env.NEXT_PUBLIC_CLIENT_URL
-    console.log("Server URL:", process.env.NEXT_PUBLIC_SERVER_URL);
-    console.log("Client URL:", process.env.NEXT_PUBLIC_CLIENT_URL);
     if (!apiUrl) {
         console.error('API URL is not defined');
         throw new Error('API URL is not defined');
@@ -28,7 +26,7 @@ export default function Home() {
     useEffect(() => {
         const fetchMovies = async () => {
             try {
-                const apiUrl = getApiUrl();
+               const apiUrl = getApiUrl();
                 const res = await fetch(`${apiUrl}/api/movies?page=${page}`, {
                     method: "GET",
                     headers: {
@@ -36,7 +34,7 @@ export default function Home() {
                     },
                     cache: "no-store"
                 });
-                //const res = await fetchMoviesApi(page)
+                //const data = fetchMoviesApi(page)
                 const data = await res.json()
 
                 if (!res.ok) {
