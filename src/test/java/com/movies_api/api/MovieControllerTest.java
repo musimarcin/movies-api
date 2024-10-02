@@ -26,6 +26,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -145,6 +146,38 @@ class MovieControllerTest {
                 .andExpect(jsonPath("$.violations", hasSize(1)))
                 .andExpect(jsonPath("$.violations[0].field", is("title")))
                 .andExpect(jsonPath("$.violations[0].message", is("Fill in title")))
+                .andReturn();
+    }
+
+    @Test
+    void testDeleteMovieExist() throws Exception {
+        this.mvc.perform(
+                delete("/api/movies")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                    {
+                                        "title" : "Movie 0"
+                                    }
+                                """)
+        )
+                .andExpect(status().isOk())
+                .andExpect(content().string("Movie deleted successfully"))
+                .andReturn();
+    }
+
+    @Test
+    void testDeleteMovieNotExist() throws Exception {
+        this.mvc.perform(
+                        delete("/api/movies")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("""
+                                    {
+                                        "title" : "Movie 33"
+                                    }
+                                """)
+                )
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Movie not found"))
                 .andReturn();
     }
 }
