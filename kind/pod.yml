@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: movies-api
+  labels:
+    app: movies-api
+    version: "1.0"
+spec:
+  containers:
+    - image: musimar/movies-api
+      name: movies-api
+      ports:
+        - containerPort: 8080
+          protocol: TCP
