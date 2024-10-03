@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 echo "Creating Kubernetes cluster"
-kind create cluster --config kind-config.yml
+kind create cluster --config cluster.yml
 
 echo "Installing NGINX Ingress"
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml

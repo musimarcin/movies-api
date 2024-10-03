@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: movies-config
 data:
-  postgres_host: localhost
+  postgres_host: postgres-service
   postgres_port: "5432"
   postgres_db: appdb
 
