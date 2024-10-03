@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: movies-api-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: movies-api-pod
+  template:
+    metadata:
+      labels:
+        app: movies-api-pod
+    spec:
+      containers:
+        - name: movies
+          image: musimar/movies-api
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: kubernetes
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: postgres_host
+                  name: movies-config
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: postgres_port
+                  name: movies-config
+            - name: DB_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  key: postgres_db
+                  name: movies-config
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: postgres_username
+                  name: movies-secrets
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: postgres_password
+                  name: movies-secrets

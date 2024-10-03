@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deploy
+spec:
+  selector:
+    matchLabels:
+      app: postgres-pod
+  template:
+    metadata:
+      labels:
+        app: postgres-pod
+    spec:
+      containers:
+        - name: postgres
+          image: "postgres:16-alpine"
+          ports:
+            - name: postgres
+              containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: movies-secrets
+                  key: postgres_username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: movies-secrets
+                  key: postgres_password
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: movies-config
+                  key: postgres_db
