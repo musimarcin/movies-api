@@ -20,7 +20,7 @@ kubectl apply -f . # initialize pods, pv, pvc, services and ingress
 API will be availe through NodePort: http://localhost:18080/api/movies  
 with front-end: http://localhost:30030/  
 API using Ingress: http://localhost/movies-api/api/movies  
-front-end: http://localhost/
+front-end: http://localhost/d 
 
 ## Tech Stack:  
 Languages: Java, TypeScript  

@@ -15,14 +15,14 @@ RUN npm run build
 # Stage 3: Create the production image
 FROM node:18-alpine AS runner
 WORKDIR /app
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
 # Create a non-root user
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
 
 # Copy necessary files from the builder stage
-COPY --from=builder /app/next.config.mjs ./
+COPY --from=builder /app/next.config.mjs ./next.config.mjs
 COPY --from=builder /app/src ./src
 COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next 
 COPY --from=builder /app/node_modules ./node_modules 
