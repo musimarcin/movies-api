@@ -34,14 +34,10 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        run: |
-          cd movies-api-ui
-          npm ci
+        run: npm ci
 
       - name: Build the Next.js app
-        run: |
-          cd movies-api-ui
-          npm run build
+        run: npm run build
 
       - name: Docker Login
         uses: docker/login-action@v3
