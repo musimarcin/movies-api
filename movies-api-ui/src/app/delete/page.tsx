@@ -1,6 +1,7 @@
 "use client";
 import { useState } from 'react';
 import styles from "./page.module.css";
+import {getApiUrl} from '@/app/components/api'
 
 export default function Delete() {
     const [title, setTitle] = useState<string>("");
@@ -10,7 +11,8 @@ export default function Delete() {
         e.preventDefault();
 
         try {
-            const res = await fetch("http://localhost:8080/api/movies", {
+            const apiUrl = getApiUrl();
+                const res = await fetch(`${apiUrl}/api/movies`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",

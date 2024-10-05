@@ -2,20 +2,8 @@
 
 import { useState, useEffect } from "react";
 import MovieList from './components/MovieList';
-import {fetchMoviesApi} from './components/api'
+import {getApiUrl} from './components/api'
 
-//const API_URL = "http://localhost:8080";
-
-const getApiUrl = () => {
-    const apiUrl =
-    process.env.NEXT_PUBLIC_SERVER_URL || process.env.NEXT_PUBLIC_CLIENT_URL
-    if (!apiUrl) {
-        console.error('API URL is not defined');
-        throw new Error('API URL is not defined');
-    }
-
-    return apiUrl;
-}
 
 export default function Home() {
     const [movies, setMovies] = useState<any[]>([]);

@@ -1,6 +1,7 @@
 "use client"
 import { useState } from 'react';
 import styles from "./page.module.css";
+import {getApiUrl} from '@/app/components/api'
 
 export default function Add() {
        const [title, setTitle] = useState<string>("");
@@ -17,7 +18,8 @@ export default function Add() {
            };
 
         try {
-            const response = await fetch("http://localhost:8080/api/movies", {
+            const apiUrl = getApiUrl();
+                const res = await fetch(`${apiUrl}/api/movies`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json" ,
@@ -25,7 +27,7 @@ export default function Add() {
                     body: JSON.stringify(payload),
                 });
 
-                if (!response.ok) {
+                if (!res.ok) {
                     throw new Error('Network response was not ok');
                 }
 

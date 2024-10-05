@@ -2,6 +2,8 @@
 import { useState } from 'react';
 import styles from "./page.module.css";
 import MovieList from '@/app/components/MovieList';
+import {getApiUrl} from '@/app/components/api'
+
 
 export default function Search() {
     const [query, setQuery] = useState<string>("");
@@ -11,7 +13,8 @@ export default function Search() {
         e.preventDefault();
 
         try {
-            const res = await fetch(`http://localhost:8080/api/movies?query=${query}`, {
+            const apiUrl = getApiUrl();
+                const res = await fetch(`${apiUrl}/api/movies`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
