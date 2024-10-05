@@ -11,8 +11,6 @@ name: Java CI with Maven
 # "**" for selecting all branches
 on:
   push:
-    paths:
-      - "movies-api-ui/**"
     branches: [ "**" ]
 #  pull_request:
 #    branches: [ "**" ]
