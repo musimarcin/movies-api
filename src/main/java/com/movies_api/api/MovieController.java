@@ -17,7 +17,7 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/api/movies")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:13000")
 public class MovieController {
 
     @Autowired
