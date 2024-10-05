@@ -14,7 +14,7 @@ export default function Search() {
 
         try {
             const apiUrl = getApiUrl();
-                const res = await fetch(`${apiUrl}/api/movies`, {
+                const res = await fetch(`${apiUrl}/api/movies?query=${query}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
