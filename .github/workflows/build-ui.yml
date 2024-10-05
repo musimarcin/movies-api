@@ -44,7 +44,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Docker Build Image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/movies-api-ui:latest ./movies-api-ui
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/movies-api-ui:latest .
 
       - name: Verify Docker Image
         run: docker images
