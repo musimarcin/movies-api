@@ -39,5 +39,6 @@ spec:
               value: http://movies-api-service:8080
             - name: NEXT_PUBLIC_CLIENT_URL
               value: http://localhost:8080
-            - name: API_URL_TEST
-              value: http://movies-api-service:8080
+          args:
+            - --build-arg NEXT_PUBLIC_SERVER_URL=http://movies-api-service:8080
+            - --build-arg NEXT_PUBLIC_CLIENT_URL=http://localhost:8080
