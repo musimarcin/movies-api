@@ -39,3 +39,5 @@ spec:
               value: http://movies-api-service:8080
             - name: NEXT_PUBLIC_CLIENT_URL
               value: http://localhost:8080
+            - name: API_URL
+              value: http://movies-api-service:8080
