@@ -10,7 +10,7 @@ export const getApiUrl = () => {
 //     } else { // Running on the client
 //         apiUrl = process.env.NEXT_PUBLIC_CLIENT_URL;
 //     }
-    const apiUrl = process.env.API_URL
+    const apiUrl = process.env.API_URL_TEST
     if (!apiUrl) {
         console.error('API URL is not defined');
         throw new Error('API URL is not defined');

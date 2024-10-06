@@ -26,3 +26,4 @@ services:
     environment:
       - NEXT_PUBLIC_SERVER_URL=http://movie-api:8080
       - NEXT_PUBLIC_CLIENT_URL=http://localhost:8080 #only because working locally (no DNS)
+      - API_URL_TEST=http://localhost:18080
