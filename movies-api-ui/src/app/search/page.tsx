@@ -44,7 +44,6 @@ export default function Search() {
                         required />
                 </div>
                 <button type="submit" className="btn btn-primary">Search</button>
-                {movies.length > 0 && <MovieList movies={movies} />}
             </form>
         </div>
     );

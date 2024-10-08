@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from 'react';
-import { getApiUrl } from 'api'
+import { getApiUrl } from './api'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 interface Movie {
