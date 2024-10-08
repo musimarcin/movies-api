@@ -4,7 +4,7 @@ import {MovieResponse} from "./Movies";
 
 export const getApiUrl = () => {
 
-    let apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+    let apiUrl = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8080"
     console.log("server: " + process.env.NEXT_PUBLIC_SERVER_URL)
     console.log("client: " + process.env.NEXT_PUBLIC_CLIENT_URL)
     if (!apiUrl) {
