@@ -10,15 +10,6 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
-
-# Inject environment variables during build
-ARG NEXT_PUBLIC_SERVER_URL
-ARG NEXT_PUBLIC_CLIENT_URL
-
-# Use the environment variables during the build
-ENV NEXT_PUBLIC_SERVER_URL=$NEXT_PUBLIC_SERVER_URL
-ENV NEXT_PUBLIC_CLIENT_URL=$NEXT_PUBLIC_CLIENT_URL
-
 RUN npm run build
 
 # Stage 3: Create the production image

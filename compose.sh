@@ -22,7 +22,8 @@ function stop_db() {
 function start() {
   build_api
   echo "Starting docker containers"
-  docker-compose -f ${dc_db} -f ${dc_api} up --build -d
+  docker-compose -f ${dc_db} -f ${dc_api} build --no-cache
+  docker-compose -f ${dc_db} -f ${dc_api} up -d
   docker-compose -f ${dc_db} -f ${dc_api} logs -f
 }
 

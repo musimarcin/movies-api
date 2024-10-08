@@ -24,5 +24,5 @@ services:
     ports:
       - "13000:3000"
     environment:
-      - NEXT_PUBLIC_SERVER_URL=http://movie-api:8080
-      - NEXT_PUBLIC_CLIENT_URL=http://localhost:8080 #only because working locally (no DNS)
+      - SERVER_URL=http://movie-api:8080
+      - CLIENT_URL=http://localhost:8080 #only because working locally (no DNS)
