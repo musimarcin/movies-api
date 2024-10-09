@@ -1,5 +1,7 @@
+version: "3.8"
 services:
   movies-api:
+    container_name: movies-api
     build:
       context: .
       dockerfile: Dockerfile.layered
@@ -24,5 +26,5 @@ services:
     ports:
       - "13000:3000"
     environment:
-      - SERVER_URL=http://movie-api:8080
+      - SERVER_URL=http://movies-api:8080
       - CLIENT_URL=http://localhost:8080 #only because working locally (no DNS)

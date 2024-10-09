@@ -8,5 +8,35 @@ services:
     ports:
       - "15432:5432"
 
+  movies-api:
+    container_name: movies-api
+    build:
+      context: .
+      dockerfile: Dockerfile.layered
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_DATASOURCE_URL: jdbc:postgresql://movies-db:5432/appdb
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
+    ports:
+      - "18080:8080"
+    restart: always
+    depends_on:
+      - movies-db
+
+
+  movies-api-ui:
+    container_name: movies-api-ui
+    build:
+      context: movies-api-ui
+      dockerfile: Dockerfile
+    ports:
+      - "13000:3000"
+    environment:
+      - SERVER_URL=http://movies-api:8080
+      - CLIENT_URL=http://localhost:8080 #only because working locally (no DNS)
+
+
 #to run both docker compose file there has to be two -f flags with names with docker-compose up logs - for logs
 #to apply changes(rebuild) docker-compose up -d --build (d for running in background)

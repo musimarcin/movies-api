@@ -10,8 +10,13 @@ export interface MovieResponse {
 }
 
 export interface Movie {
-    id: number,
-    title: string,
-    releaseYear: number,
-    created_at: Date
+  id: number;
+  title: string;
+  releaseYear: number;
+}
+
+export interface EnvListProps {
+    env: {
+      SERVER_URL?: string;
+    };
 }

@@ -22,15 +22,15 @@ function stop_db() {
 function start() {
   build_api
   echo "Starting docker containers"
-  docker-compose -f ${dc_db} -f ${dc_api} build --no-cache
-  docker-compose -f ${dc_db} -f ${dc_api} up -d
-  docker-compose -f ${dc_db} -f ${dc_api} logs -f
+  docker-compose -f ${dc_db} build --no-cache
+  docker-compose -f ${dc_db} up -d
+  docker-compose -f ${dc_db} logs -f
 }
 
 function stop() {
     echo "Stopping all containers"
-    docker-compose -f ${dc_db} -f ${dc_api} stop
-    docker-compose -f ${dc_db} -f ${dc_api} rm -f
+    docker-compose -f ${dc_db} stop
+    docker-compose -f ${dc_db} rm -f
 }
 
 function restart() {
