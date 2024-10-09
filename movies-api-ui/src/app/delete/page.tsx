@@ -1,5 +1,5 @@
 import styles from "./page.module.css";
-import DeleteMovie from "./DeleteMovie"
+import { DeleteMovie } from "./DeleteMovie"
 
 export const dynamic = 'force-dynamic'
 

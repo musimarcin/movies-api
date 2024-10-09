@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Movie from "./Movies"
+import { Movie } from "./Movies"
 
 interface MovieListProps {
   movies: Movie[];

@@ -1,7 +1,7 @@
 "use client";
 import { useState } from 'react';
 import styles from "./page.module.css";
-import EnvListProps from "@/app/components/Movies"
+import { EnvListProps } from "@/app/components/Movies"
 
 export default function AddMovie({ env }: EnvListProps) {
        const [title, setTitle] = useState<string>("");

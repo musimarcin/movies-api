@@ -2,7 +2,7 @@
 import styles from "./page.module.css";
 import { useState } from 'react';
 import { Movie, EnvListProps } from "@/app/components/Movies"
-import MovieList from "@/app/components/MovieList"
+import { MovieList } from "@/app/components/MovieList"
 
 export default function SearchMovie({ env }: EnvListProps) {
     const [query, setQuery] = useState<string>("");

@@ -1,4 +1,4 @@
-import HomeMovie from './HomeMovie';
+import { HomeMovie } from './HomeMovie';
 
 export const dynamic = 'force-dynamic'
 
