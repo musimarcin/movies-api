@@ -1,5 +1,5 @@
 import styles from "./page.module.css";
-import { AddMovie } from "./AddMovie"
+import AddMovie from "./AddMovie"
 
 export const dynamic = 'force-dynamic'
 

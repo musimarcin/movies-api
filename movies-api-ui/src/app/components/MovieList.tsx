@@ -1,11 +1,8 @@
 "use client";
 import { useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Movie } from "./Movies"
+import { Movie, MovieListProps } from "./Movies"
 
-interface MovieListProps {
-  movies: Movie[];
-}
 
 export default function MovieList({ movies }: MovieListProps) {
   useEffect(() => {

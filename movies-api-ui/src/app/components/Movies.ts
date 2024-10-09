@@ -15,6 +15,10 @@ export interface Movie {
   releaseYear: number;
 }
 
+export interface MovieListProps {
+  movies: Movie[];
+}
+
 export interface EnvListProps {
     env: {
       SERVER_URL?: string;

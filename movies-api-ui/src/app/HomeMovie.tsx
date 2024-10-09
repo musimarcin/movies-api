@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Movie, EnvListProps } from "./components/Movies"
-import { MovieList } from "./components/MovieList"
+import MovieList from "./components/MovieList"
 
 
 export default function HomeMovie({ env }: EnvListProps) {
