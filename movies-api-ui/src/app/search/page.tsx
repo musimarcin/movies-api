@@ -7,7 +7,7 @@ import MovieList from "@/app/components/MovieList"
 
 export default function Search() {
 const [movies, setMovies] = useState<any[]>([]);
-const [query, setQuery] = useState<number>("");
+const [query, setQuery] = useState<string>("");
 const [error, setError] = useState<string | null>(null);
 
     const fetchMovies = async (e: React.FormEvent<HTMLFormElement>) => {

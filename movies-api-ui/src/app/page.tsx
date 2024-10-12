@@ -55,7 +55,7 @@ export default function Home() {
     <>
       <div className="container-fluid">
           <h1 className="text-center my-2">MOVIE LIST</h1>
-            <MovieList movies={movies} error={error} />
+            <MovieList movies={movies}/>
       <div className="pagination-buttons mt-3 text-center">
         <button className="btn btn-primary" onClick={handlePrevPage} disabled={page === 1}>
           Previous
