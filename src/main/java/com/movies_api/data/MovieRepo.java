@@ -32,4 +32,6 @@ public interface MovieRepo extends JpaRepository<Movie, Long> {
 
     Optional<Movie> findByTitle(String title);
 
+    Optional<Movie> findByTitleAndReleaseYear(String title, int releaseYear);
+
 }

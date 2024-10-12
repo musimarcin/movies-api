@@ -47,8 +47,8 @@ public class MovieService {
         return movieMapper.toDTO(savedMovie);
     }
 
-    public boolean deleteMovie(String title) {
-        Optional<Movie> movie = movieRepo.findByTitle(title);
+    public boolean deleteMovie(String title, int releaseYear) {
+        Optional<Movie> movie = movieRepo.findByTitleAndReleaseYear(title, releaseYear);
         if (movie.isPresent()) {
             movieRepo.delete(movie.get());
             return true;
