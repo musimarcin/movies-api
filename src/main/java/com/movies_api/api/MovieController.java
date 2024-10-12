@@ -40,7 +40,9 @@ public class MovieController {
     @DeleteMapping
     public ResponseEntity<String> deleteMovie(@RequestBody HashMap<String, String> request) {
         String title = request.get("title");
-        int releaseYear = Integer.parseInt(request.get("releaseYear"));
+        int releaseYear = request.get("releaseYear") == null ? -1 : Integer.parseInt(request.get("releaseYear"));
+        if (releaseYear == -1) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Year not provided");
+        if (title == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Title not provided");
         boolean isDeleted = movieService.deleteMovie(title, releaseYear);
         if (isDeleted) return ResponseEntity.ok("Movie deleted successfully");
         else return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movie not found");

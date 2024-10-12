@@ -156,7 +156,8 @@ class MovieControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                     {
-                                        "title" : "Movie 0"
+                                        "title" : "Movie 0",
+                                        "releaseYear" : 1988
                                     }
                                 """)
         )
@@ -172,12 +173,45 @@ class MovieControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("""
                                     {
-                                        "title" : "Movie 33"
+                                        "title" : "Movie 33",
+                                        "releaseYear" : 1777
                                     }
                                 """)
                 )
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("Movie not found"))
+                .andReturn();
+    }
+
+    @Test
+    void testDeleteMovieWithoutTitle() throws Exception {
+        this.mvc.perform(
+                delete("/api/movies")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                    {
+                                        "releaseYear" : 1777
+                                    }
+                                """)
+        )
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Title not provided"))
+                .andReturn();
+    }
+
+    @Test
+    void testDeleteMovieWithoutReleaseYear() throws Exception {
+        this.mvc.perform(
+                        delete("/api/movies")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("""
+                                    {
+                                        "title" : "Movie 0"
+                                    }
+                                """)
+                )
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Year not provided"))
                 .andReturn();
     }
 }
