@@ -1,12 +1,12 @@
 "use client";
-import { useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { useEffect } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 import { Movie, MovieListProps } from "./Movies"
 
 
 export default function MovieList({ movies }: MovieListProps) {
   useEffect(() => {
-    require('bootstrap/dist/js/bootstrap.bundle.min.js');
+    require("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
 
   return (
