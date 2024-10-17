@@ -1,6 +1,6 @@
 package com.movies_api.api;
 
-import com.movies_api.data.MovieRepo;
+import com.movies_api.data.repository.MovieRepo;
 import com.movies_api.data.entity.Movie;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;

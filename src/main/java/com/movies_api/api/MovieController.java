@@ -1,8 +1,8 @@
 package com.movies_api.api;
 
 import com.movies_api.data.CreateMovieRequest;
-import com.movies_api.data.MovieDTO;
-import com.movies_api.data.MoviesDTO;
+import com.movies_api.data.DTO.MovieDTO;
+import com.movies_api.data.DTO.MoviesDTO;
 import com.movies_api.service.MovieService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

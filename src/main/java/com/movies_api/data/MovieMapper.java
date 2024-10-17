@@ -1,6 +1,7 @@
 package com.movies_api.data;
 
 
+import com.movies_api.data.DTO.MovieDTO;
 import com.movies_api.data.entity.Movie;
 import org.springframework.stereotype.Component;
 
