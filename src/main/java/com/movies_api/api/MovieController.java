@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 
 @RestController
@@ -33,8 +34,9 @@ public class MovieController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public MovieDTO createMovie(@RequestBody @Valid CreateMovieRequest request) {
-        return movieService.createMovie(request);
+    public ResponseEntity<MovieDTO> createMovie(@RequestBody @Valid CreateMovieRequest request) {
+        MovieDTO movieDTO = movieService.createMovie(request);
+        return new ResponseEntity<>(movieDTO, HttpStatus.CREATED);
     }
 
     @DeleteMapping

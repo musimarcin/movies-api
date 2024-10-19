@@ -117,13 +117,8 @@ class MovieControllerTest {
                                 """)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(header().string("Content-Type", is("application/problem+json")))
-                .andExpect(jsonPath("$.type", is("https://zalando.github.io/problem/constraint-violation")))
-                .andExpect(jsonPath("$.title", is("Constraint Violation")))
-                .andExpect(jsonPath("$.status", equalTo(400)))
-                .andExpect(jsonPath("$.violations", hasSize(1)))
-                .andExpect(jsonPath("$.violations[0].field", is("releaseYear")))
-                .andExpect(jsonPath("$.violations[0].message", is("Fill in release year")))
+                .andExpect(header().string("Content-Type", is("application/json")))
+                .andExpect(jsonPath("$.releaseYear", is("Fill in release year")))
                 .andReturn();
     }
 
@@ -139,13 +134,8 @@ class MovieControllerTest {
                                 """)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(header().string("Content-Type", is("application/problem+json")))
-                .andExpect(jsonPath("$.type", is("https://zalando.github.io/problem/constraint-violation")))
-                .andExpect(jsonPath("$.title", is("Constraint Violation")))
-                .andExpect(jsonPath("$.status", is(400)))
-                .andExpect(jsonPath("$.violations", hasSize(1)))
-                .andExpect(jsonPath("$.violations[0].field", is("title")))
-                .andExpect(jsonPath("$.violations[0].message", is("Fill in title")))
+                .andExpect(header().string("Content-Type", is("application/json")))
+                .andExpect(jsonPath("$.title", is("Fill in title")))
                 .andReturn();
     }
 
