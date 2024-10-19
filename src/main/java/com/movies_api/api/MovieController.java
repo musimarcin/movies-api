@@ -1,8 +1,8 @@
 package com.movies_api.api;
 
 import com.movies_api.data.CreateMovieRequest;
-import com.movies_api.data.MovieDTO;
-import com.movies_api.data.MoviesDTO;
+import com.movies_api.data.DTO.MovieDTO;
+import com.movies_api.data.DTO.MoviesDTO;
 import com.movies_api.service.MovieService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/api/movies")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
 public class MovieController {
 
     @Autowired
@@ -26,7 +26,7 @@ public class MovieController {
     @GetMapping
     public MoviesDTO getMovies(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                @RequestParam(name = "query", defaultValue = "") String query) {
-        if (query == null || query.length() == 0)
+        if (query == null || query.isEmpty())
             return movieService.getMovies(page);
         else return movieService.searchMovies(query, page);
     }

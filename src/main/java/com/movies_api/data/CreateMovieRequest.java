@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 public class CreateMovieRequest {
     //this class is used instead of MovieDTO because request will need title and release year instead of all Movie properties
+    //handling errors of missing fields
     @NotEmpty(message = "Fill in title")
     private String title;
     @NotNull(message = "Fill in release year")

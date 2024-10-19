@@ -1,7 +1,11 @@
 package com.movies_api.service;
 
 import com.movies_api.data.*;
+import com.movies_api.data.DTO.MovieDTO;
+import com.movies_api.data.DTO.MoviesDTO;
 import com.movies_api.data.entity.Movie;
+import com.movies_api.data.repository.MovieRepo;
+import com.movies_api.data.MovieMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
