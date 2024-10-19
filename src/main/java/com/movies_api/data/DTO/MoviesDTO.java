@@ -1,14 +1,12 @@
 package com.movies_api.data.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-@Setter
-@Getter
+@Data
 public class MoviesDTO {
     private List<MovieDTO> movieList;
     private int totalElements;

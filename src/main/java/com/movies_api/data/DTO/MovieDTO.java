@@ -1,13 +1,11 @@
 package com.movies_api.data.DTO;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.time.Instant;
 
-@Setter
-@Getter
+@Data
 @AllArgsConstructor
 public class MovieDTO {
     private Long id;

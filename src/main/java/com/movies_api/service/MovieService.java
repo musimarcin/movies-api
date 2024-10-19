@@ -1,6 +1,6 @@
 package com.movies_api.service;
 
-import com.movies_api.data.*;
+import com.movies_api.data.DTO.CreateMovieRequest;
 import com.movies_api.data.DTO.MovieDTO;
 import com.movies_api.data.DTO.MoviesDTO;
 import com.movies_api.data.entity.Movie;

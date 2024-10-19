@@ -1,7 +1,7 @@
 package com.movies_api.service;
 
 import com.movies_api.data.DTO.UserDTO;
-import com.movies_api.data.entity.User;
+import com.movies_api.data.entity.UserEntity;
 import com.movies_api.data.repository.UserRepo;
 import com.movies_api.data.UserMapper;
 import com.movies_api.exceptions.ResourceNotFoundException;
@@ -19,13 +19,13 @@ public class UserService {
     private UserMapper userMapper;
 
     public UserDTO createUser(UserDTO userDTO) {
-        User user = userMapper.toEntity(userDTO, new ArrayList<>());
-        User savedUser = userRepo.save(user);
+        UserEntity user = userMapper.toEntity(userDTO, new ArrayList<>());
+        UserEntity savedUser = userRepo.save(user);
         return userMapper.toDTO(savedUser);
     }
 
     public boolean getUser(String username) {
-        User user = userRepo.findByUsername(username)
+        UserEntity user = userRepo.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return true;
     }
