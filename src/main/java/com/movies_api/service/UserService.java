@@ -24,10 +24,8 @@ public class UserService {
         return userMapper.toDTO(savedUser);
     }
 
-    public boolean getUser(String username) {
-        UserEntity user = userRepo.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        return true;
+    public UserEntity getUser(String username) {
+        return userRepo.findByUsername(username);
     }
 
 }

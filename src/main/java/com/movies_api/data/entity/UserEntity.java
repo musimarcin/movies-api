@@ -33,7 +33,4 @@ public class UserEntity {
     private List<Role> roles = new ArrayList<>();
 
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Movie> movies = new ArrayList<Movie>();
-
 }

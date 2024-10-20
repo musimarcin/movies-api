@@ -1,11 +1,13 @@
 package com.movies_api.controller;
 
+import com.movies_api.data.DTO.AuthResponseDTO;
 import com.movies_api.data.DTO.CreateUserRequest;
 import com.movies_api.data.DTO.UserDTO;
 import com.movies_api.data.entity.Role;
 import com.movies_api.data.entity.UserEntity;
 import com.movies_api.data.repository.RoleRepo;
 import com.movies_api.data.repository.UserRepo;
+import com.movies_api.security.JWTGenerator;
 import com.movies_api.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,8 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private final UserService userService;
+    @Autowired
+    private JWTGenerator jwtGenerator;
 
 
     @PostMapping("register")
@@ -54,10 +58,11 @@ public class AuthController {
     }
 
     @PostMapping("login")
-    public ResponseEntity<String> loginUser(@RequestBody CreateUserRequest request) {
+    public ResponseEntity<AuthResponseDTO> loginUser(@RequestBody CreateUserRequest request) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("Logged in successfully", HttpStatus.OK);
+        String token = jwtGenerator.generateToken(authentication);
+        return new ResponseEntity<>(new AuthResponseDTO(token), HttpStatus.OK);
     }
 }

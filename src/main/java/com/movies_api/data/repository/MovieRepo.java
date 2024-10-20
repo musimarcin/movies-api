@@ -5,17 +5,28 @@ import com.movies_api.data.entity.Movie;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface MovieRepo extends JpaRepository<Movie, Long> {
 
-    //for getting only specified columns
-    @Query("select new com.movies_api.data.DTO.MovieDTO(m.id, m.title, m.releaseYear, m.addedWhen) from Movie m")
-    Page<MovieDTO> findMovies(Pageable pageable);
+
+//    @Query("SELECT NEW com.movies_api.data.DTO.MovieDTO(m.id, m.title, m.releaseYear, m.addedWhen, m.userId) FROM Movie m")
+//    Page<MovieDTO> findMovies(Pageable pageable);
+
+    Page<MovieDTO> findByUserId(Pageable pageable, Long userId);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Movie m WHERE m.userId = :userId")
+    void deleteTest(@Param("userId") Long userId);
 
     /* manually find by query
     @Query("""
@@ -26,13 +37,13 @@ public interface MovieRepo extends JpaRepository<Movie, Long> {
     */
 
     //spring boot method for finding by attribute Title in MovieDTO
-    Page<MovieDTO> findByTitleContainingIgnoreCase(String query, Pageable pageable);
+    Page<MovieDTO> findByTitleAndUserIdContainingIgnoreCase(String query, Pageable pageable, Long userId);
 
     //with interface based projection
     //Page<MovieVM> findByTitleContainingIgnoreCase(String query, Pageable pageable);
 
     Optional<Movie> findByTitle(String title);
-
     Optional<Movie> findByTitleAndReleaseYear(String title, int releaseYear);
+    Optional<Movie> findByTitleAndReleaseYearAndUserId(String string, int releaseYear, Long userId);
 
 }

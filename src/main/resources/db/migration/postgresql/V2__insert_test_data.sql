@@ -1,38 +1,4 @@
-INSERT INTO movies (title, release_year, added_when) VALUES
-('Movie 123', 1995, current_timestamp),
-('Movie 456', 2003, current_timestamp),
-('Movie 789', 2010, current_timestamp),
-('Movie 101', 1985, current_timestamp),
-('Movie 102', 1998, current_timestamp),
-('Movie 103', 2020, current_timestamp),
-('Movie 104', 1990, current_timestamp),
-('Movie 105', 2005, current_timestamp),
-('Movie 106', 2015, current_timestamp),
-('Movie 107', 1988, current_timestamp),
-('Movie 108', 1993, current_timestamp),
-('Movie 109', 2007, current_timestamp),
-('Movie 110', 2018, current_timestamp),
-('Movie 111', 1992, current_timestamp),
-('Movie 112', 1999, current_timestamp),
-('Movie 113', 2012, current_timestamp),
-('Movie 114', 1982, current_timestamp),
-('Movie 115', 2000, current_timestamp),
-('Movie 116', 1987, current_timestamp),
-('Movie 117', 2009, current_timestamp),
-('Movie 118', 2017, current_timestamp),
-('Movie 119', 1994, current_timestamp),
-('Movie 120', 2004, current_timestamp),
-('Movie 121', 1991, current_timestamp),
-('Movie 122', 2019, current_timestamp),
-('Movie 123', 1983, current_timestamp),
-('Movie 124', 2011, current_timestamp),
-('Movie 125', 1986, current_timestamp),
-('Movie 126', 2008, current_timestamp),
-('Movie 127', 2016, current_timestamp);
-
---INSERT INTO users (username, password, email, registered) VALUES
---('test', 'test', 'test@gmail.com', current_timestamp);
---INSERT INTO movies (title, release_year, added_when, user_id) VALUES
+--INSERT INTO movies (title, release_year, added_when) VALUES
 --('Movie 123', 1995, current_timestamp),
 --('Movie 456', 2003, current_timestamp),
 --('Movie 789', 2010, current_timestamp),
@@ -62,4 +28,38 @@ INSERT INTO movies (title, release_year, added_when) VALUES
 --('Movie 124', 2011, current_timestamp),
 --('Movie 125', 1986, current_timestamp),
 --('Movie 126', 2008, current_timestamp),
---('Movie 127', 2016, current_timestamp, 1);
+--('Movie 127', 2016, current_timestamp);
+
+INSERT INTO users (username, password, email, registered) VALUES
+('test', 'test', 'test@gmail.com', current_timestamp);
+INSERT INTO movies (title, release_year, added_when, user_id) VALUES
+('Movie 123', 1995, current_timestamp, 1),
+('Movie 456', 2003, current_timestamp, 1),
+('Movie 789', 2010, current_timestamp, 1),
+('Movie 101', 1985, current_timestamp, 1),
+('Movie 102', 1998, current_timestamp, 1),
+('Movie 103', 2020, current_timestamp, 1),
+('Movie 104', 1990, current_timestamp, 1),
+('Movie 105', 2005, current_timestamp, 1),
+('Movie 106', 2015, current_timestamp, 1),
+('Movie 107', 1988, current_timestamp, 1),
+('Movie 108', 1993, current_timestamp, 1),
+('Movie 109', 2007, current_timestamp, 1),
+('Movie 110', 2018, current_timestamp, 1),
+('Movie 111', 1992, current_timestamp, 1),
+('Movie 112', 1999, current_timestamp, 1),
+('Movie 113', 2012, current_timestamp, 1),
+('Movie 114', 1982, current_timestamp, 1),
+('Movie 115', 2000, current_timestamp, 1),
+('Movie 116', 1987, current_timestamp, 1),
+('Movie 117', 2009, current_timestamp, 1),
+('Movie 118', 2017, current_timestamp, 1),
+('Movie 119', 1994, current_timestamp, 1),
+('Movie 120', 2004, current_timestamp, 1),
+('Movie 121', 1991, current_timestamp, 1),
+('Movie 122', 2019, current_timestamp, 1),
+('Movie 123', 1983, current_timestamp, 1),
+('Movie 124', 2011, current_timestamp, 1),
+('Movie 125', 1986, current_timestamp, 1),
+('Movie 126', 2008, current_timestamp, 1),
+('Movie 127', 2016, current_timestamp, 1);

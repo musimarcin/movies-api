@@ -4,8 +4,11 @@ import com.movies_api.data.DTO.CreateMovieRequest;
 import com.movies_api.data.DTO.MovieDTO;
 import com.movies_api.data.DTO.MoviesDTO;
 import com.movies_api.data.entity.Movie;
+import com.movies_api.data.entity.UserEntity;
 import com.movies_api.data.repository.MovieRepo;
 import com.movies_api.data.MovieMapper;
+import com.movies_api.data.repository.UserRepo;
+import com.movies_api.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,6 +29,8 @@ public class MovieService {
     @Autowired
     private final MovieRepo movieRepo;
     @Autowired
+    private final UserRepo userRepo;
+    @Autowired
     private final MovieMapper movieMapper;
 
     public Pageable getPage(Integer page) {
@@ -33,26 +38,35 @@ public class MovieService {
         return PageRequest.of(pageNo, 10, Sort.Direction.ASC, "releaseYear");
     }
 
+    private UserEntity getUser() {
+        String username = SecurityUtil.getSessionUser();
+        return userRepo.findByUsername(username);
+    }
+
     @Transactional(readOnly = true)
     public MoviesDTO getMovies(Integer page) {
-        Page<MovieDTO> moviePage = movieRepo.findMovies(getPage(page));
+        Long userId = getUser().getId();
+        Page<MovieDTO> moviePage = movieRepo.findByUserId(getPage(page), userId);
         return new MoviesDTO(moviePage);
     }
 
     @Transactional(readOnly = true)
     public MoviesDTO searchMovies(String query, Integer page) {
-        Page<MovieDTO> moviePage = movieRepo.findByTitleContainingIgnoreCase(query, getPage(page));
+        Long userId = getUser().getId();
+        Page<MovieDTO> moviePage = movieRepo.findByTitleAndUserIdContainingIgnoreCase(query, getPage(page), userId);
         return new MoviesDTO(moviePage);
     }
 
     public MovieDTO createMovie(CreateMovieRequest request) {
-        Movie movie = new Movie(null, request.getTitle(), request.getReleaseYear(), Instant.now());
+        Long userId = getUser().getId();
+        Movie movie = new Movie(null, request.getTitle(), request.getReleaseYear(), Instant.now(), userId);
         Movie savedMovie = movieRepo.save(movie);
         return movieMapper.toDTO(savedMovie);
     }
 
     public boolean deleteMovie(String title, int releaseYear) {
-        Optional<Movie> movie = movieRepo.findByTitleAndReleaseYear(title, releaseYear);
+        Long userId = getUser().getId();
+        Optional<Movie> movie = movieRepo.findByTitleAndReleaseYearAndUserId(title, releaseYear, userId);
         if (movie.isPresent()) {
             movieRepo.delete(movie.get());
             return true;

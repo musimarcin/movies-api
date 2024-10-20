@@ -13,16 +13,8 @@ public class MovieMapper {
                 movie.getId(),
                 movie.getTitle(),
                 movie.getReleaseYear(),
-                movie.getAddedWhen());
-    }
-
-    public Movie toEntity(MovieDTO movieDTO) {
-        return new Movie(
-                movieDTO.getId(),
-                movieDTO.getTitle(),
-                movieDTO.getReleaseYear(),
-                movieDTO.getAddedWhen()
-        );
+                movie.getAddedWhen(),
+                movie.getUserId());
     }
 
 }
