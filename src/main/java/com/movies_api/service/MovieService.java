@@ -8,6 +8,7 @@ import com.movies_api.data.entity.UserEntity;
 import com.movies_api.data.repository.MovieRepo;
 import com.movies_api.data.MovieMapper;
 import com.movies_api.data.repository.UserRepo;
+import com.movies_api.exceptions.ResourceNotFoundException;
 import com.movies_api.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,14 +48,15 @@ public class MovieService {
     @Transactional(readOnly = true)
     public MoviesDTO getMovies(Integer page) {
         Long userId = getUser().getId();
-        Page<MovieDTO> moviePage = movieRepo.findByUserId(getPage(page), userId);
+        Page<MovieDTO> moviePage = movieRepo.findByUserId(userId, getPage(page));
         return new MoviesDTO(moviePage);
     }
 
     @Transactional(readOnly = true)
     public MoviesDTO searchMovies(String query, Integer page) {
         Long userId = getUser().getId();
-        Page<MovieDTO> moviePage = movieRepo.findByTitleAndUserIdContainingIgnoreCase(query, getPage(page), userId);
+        Page<MovieDTO> moviePage = movieRepo.findByTitleContainingIgnoreCaseAndUserId(query, userId, getPage(page));
+        if (moviePage.isEmpty()) throw new ResourceNotFoundException("Movie with name " + query + " not found");
         return new MoviesDTO(moviePage);
     }
 

@@ -29,7 +29,7 @@ public class CustomUserDetailService implements UserDetailsService {
         UserEntity user = userRepo.findByUsername(username);
         if(user != null) {
             return new User(
-                    user.getEmail(),
+                    user.getUsername(),
                     user.getPassword(),
                     user.getRoles().stream().map((role) ->
                             new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList())

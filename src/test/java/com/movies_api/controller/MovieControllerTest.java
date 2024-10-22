@@ -10,11 +10,13 @@ import com.movies_api.security.JWTGenerator;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -83,7 +85,7 @@ class MovieControllerTest {
 
 
     @BeforeEach
-    void addTestData() {
+    void setUp() {
         Role role = roleRepo.findByName("USER")
                 .orElseThrow(() -> new RuntimeException("Role not found"));
         UserEntity testUser = new UserEntity();
@@ -93,17 +95,13 @@ class MovieControllerTest {
         testUser.setRoles(Collections.singletonList(role));
         userRepo.save(testUser);
 
-//        this.testUserToken = jwtGenerator.generateToken(new UsernamePasswordAuthenticationToken(
-//                testUser.getUsername(),
-//                null,
-//                AuthorityUtils.createAuthorityList("USER")));
-
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
                 testUser.getUsername(),
                 null,
                 AuthorityUtils.createAuthorityList("USER"));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+
         this.testUserToken = jwtGenerator.generateToken(authentication);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         List<Movie> movieList = new ArrayList<>();
         for (int i = 0; i < 30; i++)
@@ -113,12 +111,11 @@ class MovieControllerTest {
     }
 
     @AfterEach
-    void removeTestData() {
+    void cleanUp() {
         Long userId = userRepo.findByUsername("testUser").getId();
         movieRepo.deleteTest(userId);
         userRepo.delete(userRepo.findByUsername("testUser"));
     }
-
 
 
     //parameterized test with given inputs
@@ -129,14 +126,41 @@ class MovieControllerTest {
     })
     void testGetMovies(int pageNo, int totalElements, int totalPages, int currentPage, boolean hasNext) throws Exception {
         mvc.perform(get("/api/movies?page=" + pageNo)
-//                .header("Authorization", "Bearer " + testUserToken))
-                )
+//                        .header("Authorization", "Bearer " + testUserToken)
+                        )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalElements", equalTo(totalElements)))
                 .andExpect(jsonPath("$.totalPages", equalTo(totalPages)))
                 .andExpect(jsonPath("$.currentPage", equalTo(currentPage)))
                 .andExpect(jsonPath("$.hasNext", equalTo(hasNext)));
     }
+
+    @ParameterizedTest
+    @CsvSource({
+            "Movie 4,1,1,0,false",
+            "Movie 20,1,1,0,false"
+    })
+    void testGetQueryMovie(String query, int totalElements, int totalPages, int currentPage, boolean hasNext) throws Exception{
+        mvc.perform(get("/api/movies?query=" + query))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Content-Type", is("application/json")))
+                .andExpect(jsonPath("$.movieList", hasSize(1)))
+                .andExpect(jsonPath("$.movieList[0].id", notNullValue()))
+                .andExpect(jsonPath("$.movieList[0].title", equalTo(query)))
+                .andExpect(jsonPath("$.totalElements", equalTo(totalElements)))
+                .andExpect(jsonPath("$.totalPages", equalTo(totalPages)))
+                .andExpect(jsonPath("$.currentPage", equalTo(currentPage)))
+                .andExpect(jsonPath("$.hasNext", equalTo(hasNext)));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = "Movie 33")
+    void testGetQueryMoviesBadRequest(String query) throws Exception {
+        mvc.perform(get("/api/movies?query=" + query))
+                .andExpect(status().isNotFound())
+                .andExpect(header().string("Content-Type", is("application/json")));
+    }
+
 
     @Test
     public void testReturnUnauthorizedWhenNoToken() throws Exception {
@@ -148,8 +172,7 @@ class MovieControllerTest {
     //test with successful creation
     @Test
     void testCreateMovie() throws Exception {
-        this.mvc.perform(
-                        post("/api/movies")
+        this.mvc.perform(post("/api/movies")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("""
                                 {
@@ -167,8 +190,7 @@ class MovieControllerTest {
     //test unsuccessful
     @Test
     void testCreateMovieWithoutYear() throws Exception {
-        this.mvc.perform(
-                        post("/api/movies")
+        this.mvc.perform(post("/api/movies")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("""
                                 {
@@ -183,8 +205,7 @@ class MovieControllerTest {
 
     @Test
     void testCreateMovieWithoutTitle() throws Exception {
-        this.mvc.perform(
-                        post("/api/movies")
+        this.mvc.perform(post("/api/movies")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("""
                                 {
@@ -199,8 +220,7 @@ class MovieControllerTest {
 
     @Test
     void testDeleteMovieExist() throws Exception {
-        this.mvc.perform(
-                delete("/api/movies")
+        this.mvc.perform(delete("/api/movies")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                     {
@@ -215,8 +235,7 @@ class MovieControllerTest {
 
     @Test
     void testDeleteMovieNotExist() throws Exception {
-        this.mvc.perform(
-                        delete("/api/movies")
+        this.mvc.perform(delete("/api/movies")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("""
                                     {
@@ -231,8 +250,7 @@ class MovieControllerTest {
 
     @Test
     void testDeleteMovieWithoutTitle() throws Exception {
-        this.mvc.perform(
-                delete("/api/movies")
+        this.mvc.perform(delete("/api/movies")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                     {
@@ -246,8 +264,7 @@ class MovieControllerTest {
 
     @Test
     void testDeleteMovieWithoutReleaseYear() throws Exception {
-        this.mvc.perform(
-                        delete("/api/movies")
+        this.mvc.perform(delete("/api/movies")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("""
                                     {

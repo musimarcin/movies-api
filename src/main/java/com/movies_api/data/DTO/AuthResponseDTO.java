@@ -1,16 +1,17 @@
 package com.movies_api.data.DTO;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @Data
 
 public class AuthResponseDTO {
     private String accessToken;
-    private String tokenType = "Bearer ";
+    private String tokenType = "Bearer";
+    private Long id;
+    private String username;
+    private String email;
+    private List<String> roles;
 
-    public AuthResponseDTO(String accessToken) {
-        this.accessToken = accessToken;
-    }
 }

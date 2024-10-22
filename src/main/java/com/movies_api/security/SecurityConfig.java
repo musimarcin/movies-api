@@ -29,6 +29,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf(csrf -> csrf.disable())  // attack that tricks a user’s browser into making unwanted requests to a different website (no need in REST API)
+//                .cors(httpSecurityCorsConfigurer -> )
                 .exceptionHandling(exceptionHandling ->
                         exceptionHandling.authenticationEntryPoint(authEntryPoint))
                 .sessionManagement(sessionManagement ->

@@ -29,6 +29,9 @@ const Navbar = () => {
                 </ul>
               </div>
             </div>
+            <div className="d-flex me-2">
+
+            </div>
           </nav>
         </header>
     );
