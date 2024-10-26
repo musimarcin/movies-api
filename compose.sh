@@ -3,10 +3,6 @@
 declare dc_db=docker-compose.yml
 declare dc_api=docker-compose-api.yml
 
-function build_api() {
-    mvn clean install -DskipTests
-}
-
 function start_db() {
   echo "Starting db docker compose"
   docker-compose -f ${dc_db} up -d
@@ -20,7 +16,6 @@ function stop_db() {
 }
 
 function start() {
-  build_api
   echo "Starting docker containers"
   docker-compose -f ${dc_db} build --no-cache
   docker-compose -f ${dc_db} up -d

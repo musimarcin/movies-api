@@ -47,7 +47,6 @@ public class UserService {
     }
 
     public UserDTO getUser(String username) {
-        System.out.println(passwordEncoder.encode("test"));
         return userMapper.toDTO(userRepo.findByUsername(username));
     }
 

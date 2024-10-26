@@ -15,7 +15,7 @@ const Navbar = () => {
               <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav">
                   <li className="nav-item">
-                    <a className="nav-link active" aria-current="page" href="/">Home</a>
+                    <a className="nav-link" aria-current="page" href="/">Home</a>
                   </li>
                   <li className="nav-item">
                     <a className="nav-link" href="add">Add movie</a>
@@ -30,7 +30,14 @@ const Navbar = () => {
               </div>
             </div>
             <div className="d-flex me-2">
-
+                <ul className="navbar-nav">
+                  <li className="nav-item">
+                    <a className="nav-link" href="login">Login</a>
+                  </li>
+                  <li className="nav-item">
+                    <a className="nav-link" href="register">Register</a>
+                  </li>
+                </ul>
             </div>
           </nav>
         </header>

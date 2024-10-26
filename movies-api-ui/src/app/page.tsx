@@ -12,11 +12,12 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [totalPages, setTotalPages] = useState<number>(1);
 
-  // fetching movies with route.ts in api/movies/
+  // fetching movies with route.ts in api/
     const fetchMovies = async () => {
         try {
             const res = await fetch(`/api?page=${page}`, {
             method: "GET",
+            credentials: "include",
             headers: {
               "Content-Type": "application/json",
             },
@@ -31,7 +32,6 @@ export default function Home() {
 
         } catch (error) {
             if (error instanceof Error) {
-                console.error("Fetch error:", error.message);
                 setError(error.message);
             } else {
                 console.error("An unknown error occurred:", error);

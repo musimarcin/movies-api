@@ -15,16 +15,16 @@ export default function Add() {
            title,
            releaseYear,
        };
-
+        console.log
         try {
             const res = await fetch(`/api`, {
                 method: "POST",
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json" ,
                 },
                 body: JSON.stringify(payload),
             });
-
             if (!res.ok) {
                 throw new Error("Network response was not ok");
             }

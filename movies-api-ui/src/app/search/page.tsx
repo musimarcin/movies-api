@@ -15,6 +15,7 @@ const [error, setError] = useState<string | null>(null);
         try {
           const res = await fetch(`/api?query=${query}`, {
             method: "GET",
+            credentials: "include",
             headers: {
               "Content-Type": "application/json",
             },

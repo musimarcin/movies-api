@@ -20,6 +20,7 @@ export default function Delete() {
         try {
             const res = await fetch(`/api`, {
             method: "DELETE",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },

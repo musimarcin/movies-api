@@ -1,17 +1,36 @@
 //naming route.ts is important for local fetching in page.tsx
 import { NextResponse } from "next/server";
+import { cookies } from 'next/headers'
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const page = searchParams.get("page") || "1";
     const query = searchParams.get("query") || "";
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token');
+
     try {
         let apiResponse;
 
         if (query === "") {
-            apiResponse = await fetch(`${process.env.SERVER_URL}/api/movies?page=${page}`);
+            apiResponse = await fetch(`${process.env.SERVER_URL}/api/movies?page=${page}`, {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+                "Cookie": `token=${token.value}`
+            },
+        });
+            console.log(apiResponse);
         } else {
-            apiResponse = await fetch(`${process.env.SERVER_URL}/api/movies?query=${query}`);
+            apiResponse = await fetch(`${process.env.SERVER_URL}/api/movies?query=${query}`, {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                   "Content-Type": "application/json",
+                   "Cookie": `token=${token.value}`
+                },
+            });
         }
 
         if (!apiResponse.ok) {
@@ -19,11 +38,12 @@ export async function GET(request: Request) {
         }
 
         const movies = await apiResponse.json();
-
-        return NextResponse.json({
+        const res = NextResponse.json({
             movieList: movies,
             page,
         });
+        return res;
+
     } catch (error) {
         console.error("Error fetching movies:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
@@ -32,14 +52,21 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
     const payload = await request.json();
-
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token');
     try {
         const apiResponse = await fetch(`${process.env.SERVER_URL}/api/movies`, {
             method: "POST",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
+                "Cookie": `token=${token.value}`
             },
             body: JSON.stringify(payload),
+        });
+
+        apiResponse.headers.forEach((value, name) => {
+            console.log(`${name}: ${value}`);
         });
 
         if (!apiResponse.ok) {
@@ -47,7 +74,9 @@ export async function POST(request: Request) {
         }
 
         const movie = await apiResponse.json();
-        return NextResponse.json(movie);
+        const res = NextResponse.json(movie);
+        return res;
+
     } catch (error) {
         console.error("Error fetching movies:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
@@ -56,12 +85,16 @@ export async function POST(request: Request) {
 
 export async function DELETE(request: Request) {
     const payload = await request.json();
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token');
 
     try {
         const apiResponse = await fetch(`${process.env.SERVER_URL}/api/movies`, {
             method: "DELETE",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
+                "Cookie": `token=${token.value}`
             },
             body: JSON.stringify(payload),
         });

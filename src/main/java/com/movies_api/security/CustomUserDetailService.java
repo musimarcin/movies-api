@@ -18,16 +18,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
 public class CustomUserDetailService implements UserDetailsService {
 
     @Autowired
     private UserRepo userRepo;
 
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity user = userRepo.findByUsername(username);
-        if(user != null) {
+        if (user != null) {
             return new User(
                     user.getUsername(),
                     user.getPassword(),

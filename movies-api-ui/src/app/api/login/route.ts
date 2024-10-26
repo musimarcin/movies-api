@@ -6,20 +6,25 @@ export async function POST(request: Request) {
     try {
         const apiResponse = await fetch(`${process.env.SERVER_URL}/api/auth/login`, {
             method: "POST",
+            credentials: "include",
             headers: {
-                "Content-Type": "application/json",
+                "Content-Type": "application/json"
             },
             body: JSON.stringify(payload),
         });
 
         if (!apiResponse.ok) {
-            return NextResponse.json({ error: "Failed to login movie" }, { status: 500 });
+            return NextResponse.json({ error: "Failed to login user" }, { status: 500 });
         }
 
-        const movie = await apiResponse.json();
-        return NextResponse.json(movie);
+        const tokenCookie = apiResponse.headers.get('set-cookie');
+        console.log(tokenCookie)
+        const jwt = await apiResponse.json();
+        const res = NextResponse.json(jwt);
+        if (tokenCookie) res.headers.set('set-cookie', tokenCookie);
+        return res;
     } catch (error) {
         console.error("Error fetching movies:", error);
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+        return NextResponse.json({ error: "Internal Server Errorand" }, { status: 500 });
     }
 }
