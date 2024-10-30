@@ -7,34 +7,35 @@ export async function GET(request: Request) {
     const page = searchParams.get("page") || "1";
     const query = searchParams.get("query") || "";
     const cookieStore = await cookies();
-    const token = cookieStore.get('token');
+    const token = cookieStore.get("token") || "";
+
+    if (token == "") return NextResponse.json({ error: "Not logged in" }, { status: 401 });
 
     try {
         let apiResponse;
 
         if (query === "") {
             apiResponse = await fetch(`${process.env.SERVER_URL}/api/movies?page=${page}`, {
-            method: "GET",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-                "Cookie": `token=${token.value}`
-            },
-        });
-            console.log(apiResponse);
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Cookie": token ? `token=${token.value}` : '',
+                },
+            });
         } else {
             apiResponse = await fetch(`${process.env.SERVER_URL}/api/movies?query=${query}`, {
                 method: "GET",
                 credentials: "include",
                 headers: {
                    "Content-Type": "application/json",
-                   "Cookie": `token=${token.value}`
+                   "Cookie": token ? `token=${token.value}` : '',
                 },
             });
         }
 
         if (!apiResponse.ok) {
-            return NextResponse.json({ error: "Failed to fetch movies" }, { status: 500 });
+            return NextResponse.json({ error : "Movie not found." }, { status : apiResponse.status });
         }
 
         const movies = await apiResponse.json();
@@ -45,7 +46,6 @@ export async function GET(request: Request) {
         return res;
 
     } catch (error) {
-        console.error("Error fetching movies:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
 }
@@ -60,13 +60,9 @@ export async function POST(request: Request) {
             credentials: "include",
             headers: {
                 "Content-Type": "application/json",
-                "Cookie": `token=${token.value}`
+                "Cookie": token ? `token=${token.value}` : '',
             },
             body: JSON.stringify(payload),
-        });
-
-        apiResponse.headers.forEach((value, name) => {
-            console.log(`${name}: ${value}`);
         });
 
         if (!apiResponse.ok) {
@@ -78,7 +74,6 @@ export async function POST(request: Request) {
         return res;
 
     } catch (error) {
-        console.error("Error fetching movies:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
 }
@@ -94,19 +89,19 @@ export async function DELETE(request: Request) {
             credentials: "include",
             headers: {
                 "Content-Type": "application/json",
-                "Cookie": `token=${token.value}`
+                "Cookie": token ? `token=${token.value}` : '',
             },
             body: JSON.stringify(payload),
         });
 
+        const data = await apiResponse.text();
         if (!apiResponse.ok) {
-            return NextResponse.json({ error: "Failed to delete movie" }, { status: 500 });
+            return NextResponse.json({ error: data }, { status: apiResponse.status });
         }
 
-       return NextResponse.json({ message: 'Movie deleted successfully' });
+       return NextResponse.json({ message: data });
 
     } catch (error) {
-        console.error("Error deleting movie:", error);
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+        return NextResponse.json({ error }, { status: 500 });
     }
 }

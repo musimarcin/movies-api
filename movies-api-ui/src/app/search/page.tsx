@@ -6,33 +6,31 @@ import MovieList from "@/app/components/MovieList"
 
 
 export default function Search() {
-const [movies, setMovies] = useState<any[]>([]);
-const [query, setQuery] = useState<string>("");
-const [error, setError] = useState<string | null>(null);
+    const [movies, setMovies] = useState<any[]>([]);
+    const [query, setQuery] = useState<string>("");
+    const [message, setMessage] = useState<string | null>(null);
 
     const fetchMovies = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-          const res = await fetch(`/api?query=${query}`, {
+        const res = await fetch(`/api?query=${query}`, {
             method: "GET",
             credentials: "include",
             headers: {
               "Content-Type": "application/json",
             },
             cache: "no-store",
-          });
-          const data = await res.json();
-          console.log(data)
+        });
 
-        if (!res.ok) throw new Error("Failed to load movies")
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Failed to find a movie.")
 
         setMovies(data.movieList.movieList);
         } catch (error) {
             if (error instanceof Error) {
-                console.error("Fetch error:", error.message);
-                setError(error.message);
+                setMessage(error.message);
             } else {
-                console.error("An unknown error occurred:", error);
+                setMessage("An unknown error occurred.");
             }
         }
     };
@@ -49,6 +47,7 @@ const [error, setError] = useState<string | null>(null);
                         required />
                 </div>
                 <button type="submit" className="btn btn-primary">Search</button>
+                {message && <div className="mt-3 alert alert-info">{message}</div>}
                 {movies.length > 0 && <MovieList movies={movies} />}
             </form>
         </div>

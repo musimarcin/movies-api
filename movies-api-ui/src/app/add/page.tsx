@@ -15,7 +15,6 @@ export default function Add() {
            title,
            releaseYear,
        };
-        console.log
         try {
             const res = await fetch(`/api`, {
                 method: "POST",
@@ -25,13 +24,19 @@ export default function Add() {
                 },
                 body: JSON.stringify(payload),
             });
+
+            const data = await res.json();
             if (!res.ok) {
-                throw new Error("Network response was not ok");
+                throw new Error(data.error);
             }
 
-            setMessage("Movie added successfully!");
+            setMessage("Movie added successfully");
         } catch (error) {
-            setMessage("Failed to add movie. Please try again.");
+            if (error instanceof Error) {
+                setMessage(error.message);
+            } else {
+                setMessage("An unknown error occurred.");
+            }
         }
         setTitle("");
         setReleaseYear("");
@@ -44,17 +49,17 @@ export default function Add() {
             <form onSubmit={addMovie} className={`${styles.add} mt-3 bg-light p-3`}>
               <div className="d-flex mb-3">
                 <div className="me-auto">
-                <label className="form-label">Movie title</label>
-                <input className="form-control" value={title} onChange={(e) => setTitle(e.target.value)} required/>
+                    <label className="form-label">Movie title</label>
+                    <input className="form-control" value={title} onChange={(e) => setTitle(e.target.value)} required/>
                 </div>
                 <div>
-                <label className="form-label">Release Year</label>
-                <input className="form-control" value={releaseYear} onChange={(e) => setReleaseYear(e.target.value ? parseInt(e.target.value) : "")}/>
+                    <label className="form-label">Release Year</label>
+                    <input className="form-control" value={releaseYear} onChange={(e) => setReleaseYear(e.target.value ? parseInt(e.target.value) : "")} required/>
                 </div>
               </div>
               <div className="mb-3">
                 <label className="form-label">Description</label>
-                <input className="form-control" value={description} onChange={(e) => setDescription(e.target.value)}/>
+                <input className="form-control" value={description} onChange={(e) => setDescription(e.target.value)} />
               </div>
               <button type="submit" className="btn btn-primary">Add</button>
               {message && <div className="mt-3 alert alert-info">{message}</div>}

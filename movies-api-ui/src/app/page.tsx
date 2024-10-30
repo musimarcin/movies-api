@@ -2,29 +2,28 @@
 import { useState, useEffect } from "react";
 import { Movie, EnvListProps, MovieListProps } from "./components/Movies"
 import MovieList from "./components/MovieList"
-//import "bootstrap/dist/css/bootstrap.min.css";
 
-//export const dynamic = "force-dynamic";
 
 export default function Home() {
   const [movies, setMovies] = useState<any[]>([]);
   const [page, setPage] = useState<number>(1);
   const [error, setError] = useState<string | null>(null);
   const [totalPages, setTotalPages] = useState<number>(1);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // fetching movies with route.ts in api/
     const fetchMovies = async () => {
         try {
             const res = await fetch(`/api?page=${page}`, {
-            method: "GET",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            cache: "no-store",
+                method: "GET",
+                credentials: "include",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                cache: "no-store",
             });
-            const data = await res.json();
 
+            const data = await res.json();
             if (!res.ok) throw new Error("Failed to load movies")
 
             setMovies(data.movieList.movieList);
@@ -39,9 +38,15 @@ export default function Home() {
         }
     };
 
-  useEffect(() => {
-    fetchMovies();
-  }, [page]);
+    useEffect(() => {
+        async function fetchLoginStatus() {
+              const res = await fetch('/api/getcookie');
+              const data = await res.json();
+              setIsLoggedIn(data.isLoggedIn);
+        };
+        fetchLoginStatus();
+        fetchMovies();
+    }, [page]);
 
   const handleNextPage = () => {
     if (page < totalPages) setPage(page + 1);
@@ -54,8 +59,12 @@ export default function Home() {
   return (
     <>
       <div className="container-fluid">
-          <h1 className="text-center my-2">MOVIE LIST</h1>
-            <MovieList movies={movies}/>
+        {isLoggedIn ? (
+            <>
+              <h1 className="text-center my-2">MOVIE LIST</h1>
+                <MovieList movies={movies}/>
+            </>
+        ) : null}
       <div className="pagination-buttons mt-3 text-center">
         <button className="btn btn-primary" onClick={handlePrevPage} disabled={page === 1}>
           Previous

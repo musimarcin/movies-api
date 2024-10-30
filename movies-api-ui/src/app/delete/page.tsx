@@ -19,21 +19,26 @@ export default function Delete() {
 
         try {
             const res = await fetch(`/api`, {
-            method: "DELETE",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(payload),
+                method: "DELETE",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
             });
 
+            const data = await res.json();
             if (!res.ok) {
-                throw new Error("Failed to delete movie");
+                setMessage(data.error);
             }
 
-            setMessage("Movie deleted successfully!");
+            setMessage(data.message);
         } catch (error) {
-            setMessage("Failed to delete movie. Please try again.");
+            if (error instanceof Error) {
+                setMessage(error.message);
+            } else {
+                setMessage("An unknown error occurred.");
+            }
         }
         setTitle("");
         setReleaseYear("");

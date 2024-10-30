@@ -24,11 +24,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} bg-secondary`}>
-        <Navbar/>
-        {children}
+            <Navbar />
+            {children}
       </body>
     </html>
   );

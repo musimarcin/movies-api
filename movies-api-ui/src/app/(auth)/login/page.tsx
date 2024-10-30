@@ -1,13 +1,16 @@
 "use client";
 import styles from "./page.module.css";
+import { useSearchParams } from 'next/navigation';
 import { useState, useEffect } from "react";
-
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [message, setMessage] = useState<string | null>(null);
+    const searchParams = useSearchParams();
+    const router = useRouter();
 
     const loginUser = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -15,6 +18,7 @@ export default function Login() {
            username,
            password
         };
+
         try {
             const res = await fetch(`/api/login`, {
                 method: "POST",
@@ -24,21 +28,32 @@ export default function Login() {
                 },
                 body: JSON.stringify(payload),
             });
-            if (!res.ok) {
-                throw new Error("Network response was not ok");
-            }
+
             const data = await res.json();
-            console.log(data);
-            setMessage("Successfully logged in");
+            if (!res.ok) {
+                throw new Error(data.error || "Failed to login. Please try again.");
+            }
+
+            router.push('/');
         } catch (error) {
-            setMessage("Failed to log in. Please try again.");
+            if (error instanceof Error) {
+                setMessage(error.message);
+            } else {
+                setMessage("An unknown error occurred.");
+            }
         }
     };
 
+    useEffect(() => {
+        const msg = searchParams.get('message');
+        if (msg) {
+          setMessage(msg);
+        }
+    }, [searchParams]);
 
     return (
         <div className="d-flex justify-content-center">
-            <form onSubmit={loginUser} className={`${styles.add} mt-3 bg-light p-3`}>
+            <form onSubmit={loginUser} className={`${styles.login} mt-3 bg-light p-3`}>
               <div className="d-flex mb-3">
                 <div className="me-auto">
                 <label className="form-label">Username</label>

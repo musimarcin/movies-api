@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
     const payload = await request.json();
-
     try {
         const apiResponse = await fetch(`${process.env.SERVER_URL}/api/auth/login`, {
             method: "POST",
@@ -13,18 +12,16 @@ export async function POST(request: Request) {
             body: JSON.stringify(payload),
         });
 
+        const data = await apiResponse.text() || "An unknown error occurred.";
         if (!apiResponse.ok) {
-            return NextResponse.json({ error: "Failed to login user" }, { status: 500 });
+            return NextResponse.json({ error: data }, { status: apiResponse.status });
         }
 
         const tokenCookie = apiResponse.headers.get('set-cookie');
-        console.log(tokenCookie)
-        const jwt = await apiResponse.json();
-        const res = NextResponse.json(jwt);
+        const res = NextResponse.json({ message: data });
         if (tokenCookie) res.headers.set('set-cookie', tokenCookie);
         return res;
     } catch (error) {
-        console.error("Error fetching movies:", error);
-        return NextResponse.json({ error: "Internal Server Errorand" }, { status: 500 });
+        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
 }

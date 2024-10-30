@@ -16,7 +16,7 @@ export default function Register() {
            password,
            email
        };
-        console.log(payload)
+
         try {
             const res = await fetch(`/api/register`, {
                 method: "POST",
@@ -25,29 +25,33 @@ export default function Register() {
                 },
                 body: JSON.stringify(payload),
             });
-
+            const data = await res.json();
             if (!res.ok) {
-                throw new Error("Network response was not ok");
+                throw new Error(data.error || "Failed to register user. Please try again.");
             }
 
-            setMessage("Registered successfully");
+            setMessage(data.message);
         } catch (error) {
-            setMessage("Failed to register user. Please try again.");
+            if (error instanceof Error) {
+                setMessage(error.message);
+            } else {
+                setMessage("An unknown error occurred.");
+            }
         }
     };
 
 
     return (
         <div className="d-flex justify-content-center">
-            <form onSubmit={registerUser} className={`${styles.add} mt-3 bg-light p-3`}>
+            <form onSubmit={registerUser} className={`${styles.register} mt-3 bg-light p-3`}>
               <div className="d-flex mb-3">
                 <div className="me-auto">
-                <label className="form-label">Username</label>
-                <input className="form-control" value={username} onChange={(e) => setUsername(e.target.value)} required/>
+                    <label className="form-label">Username</label>
+                    <input className="form-control" value={username} onChange={(e) => setUsername(e.target.value)} required/>
                 </div>
                 <div>
-                <label className="form-label">Password</label>
-                <input className="form-control" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required/>
+                    <label className="form-label">Password</label>
+                    <input className="form-control" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required/>
                 </div>
               </div>
               <div className="mb-3">

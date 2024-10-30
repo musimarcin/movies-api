@@ -5,6 +5,7 @@ import com.movies_api.data.UserMapper;
 import com.movies_api.security.JWTGenerator;
 import com.movies_api.service.UserService;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,18 @@ public class UserController {
         }
     }
 
+    @PostMapping("logout")
+    public ResponseEntity<String> logoutUser(HttpServletResponse response) {
+        SecurityContextHolder.clearContext();
+        Cookie cookie = new Cookie("token", null);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        cookie.setSecure(true);
+        response.addCookie(cookie);
+        return new ResponseEntity<>("Logged out successfully", HttpStatus.OK);
+    }
+
     private static Cookie getCookie(String token) {
         Cookie cookie = new Cookie("token", token);
         cookie.setHttpOnly(true);
@@ -73,5 +86,10 @@ public class UserController {
         cookie.setMaxAge(3500);
         cookie.setSecure(true);
         return cookie;
+    }
+
+    @GetMapping("login")
+    public boolean isLoggedIn() {
+        return userService.checkLoggedIn();
     }
 }

@@ -7,6 +7,7 @@ import com.movies_api.data.entity.UserEntity;
 import com.movies_api.data.repository.RoleRepo;
 import com.movies_api.data.repository.UserRepo;
 import com.movies_api.data.UserMapper;
+import com.movies_api.security.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -50,4 +51,7 @@ public class UserService {
         return userMapper.toDTO(userRepo.findByUsername(username));
     }
 
+    public boolean checkLoggedIn() {
+        return (SecurityUtil.getSessionUser() != null);
+    }
 }
