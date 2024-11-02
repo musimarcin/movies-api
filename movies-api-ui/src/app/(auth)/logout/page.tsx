@@ -32,7 +32,7 @@ export default function Logout() {
     useEffect(() => {
         const handleLogout = async () => {
             await logout();
-            router.replace(`/login?message=${encodeURIComponent(message ?? '')}`);
+            router.push('/login');
         };
 
         handleLogout();

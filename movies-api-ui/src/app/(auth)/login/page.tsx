@@ -1,6 +1,5 @@
 "use client";
 import styles from "./page.module.css";
-import { useSearchParams } from 'next/navigation';
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 
@@ -9,7 +8,6 @@ export default function Login() {
     const [password, setPassword] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [message, setMessage] = useState<string | null>(null);
-    const searchParams = useSearchParams();
     const router = useRouter();
 
     const loginUser = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -43,13 +41,6 @@ export default function Login() {
             }
         }
     };
-
-    useEffect(() => {
-        const msg = searchParams.get('message');
-        if (msg) {
-          setMessage(msg);
-        }
-    }, [searchParams]);
 
     return (
         <div className="d-flex justify-content-center">
