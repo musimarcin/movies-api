@@ -11,6 +11,7 @@ import com.movies_api.security.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -54,4 +55,38 @@ public class UserService {
     public boolean checkLoggedIn() {
         return (SecurityUtil.getSessionUser() != null);
     }
+
+    @Transactional
+    public boolean deleteUser(String username) {
+        UserEntity user = userRepo.findByUsername(username);
+        if (user != null) {
+            userRepo.delete(user);
+            return true;
+        } else return false;
+    }
+
+    @Transactional
+    public boolean changeUsername(String oldUsername, String newUsername) {
+        if (userRepo.findByUsername(oldUsername) != null) {
+            int changes = userRepo.updateUsername(oldUsername, newUsername);
+            return changes > 0;
+        } else return false;
+    }
+
+    @Transactional
+    public boolean changePassword(String username, String password) {
+        if (userRepo.findByUsername(username) != null) {
+            int changes = userRepo.updatePassword(username, password);
+            return changes > 0;
+        } else return false;
+    }
+
+    @Transactional
+    public boolean changeEmail(String username, String email) {
+        if (userRepo.findByUsername(username) != null) {
+            int changes = userRepo.updateEmail(username, email);
+            return changes > 0;
+        } else return false;
+    }
+
 }

@@ -163,7 +163,7 @@ class MovieControllerTest {
 
 
     @Test
-    public void testReturnUnauthorizedWhenNoToken() throws Exception {
+    void testReturnUnauthorizedWhenNoToken() throws Exception {
         SecurityContextHolder.clearContext();
         mvc.perform(get("/api/movies"))
                 .andExpect(status().isUnauthorized());

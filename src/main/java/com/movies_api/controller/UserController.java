@@ -3,9 +3,9 @@ package com.movies_api.controller;
 import com.movies_api.data.DTO.CreateUserRequest;
 import com.movies_api.data.UserMapper;
 import com.movies_api.security.JWTGenerator;
+import com.movies_api.security.SecurityUtil;
 import com.movies_api.service.UserService;
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,13 +39,23 @@ public class UserController {
     @PostMapping("register")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> registerUser(@RequestBody CreateUserRequest request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()
+                && !"anonymousUser".equals(authentication.getPrincipal())) {
+            return new ResponseEntity<>("Already logged in", HttpStatus.FORBIDDEN);
+        }
         if (userService.checkUser(request.getUsername())) {
             return new ResponseEntity<>("Username taken", HttpStatus.BAD_REQUEST);
+        }
+        if (request.getUsername() == null ||
+                request.getPassword() == null ||
+                request.getEmail() == null) {
+            return new ResponseEntity<>("Fields missing", HttpStatus.BAD_REQUEST);
         }
         if (request.getUsername().isEmpty() ||
                 request.getPassword().isEmpty() ||
                 request.getEmail().isEmpty()) {
-            return new ResponseEntity<>("Fields missing", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Fields cannot be empty", HttpStatus.BAD_REQUEST);
         }
         userService.createUser(request);
         return new ResponseEntity<>("User registered", HttpStatus.CREATED);
@@ -92,4 +101,73 @@ public class UserController {
     public boolean isLoggedIn() {
         return userService.checkLoggedIn();
     }
+
+    @DeleteMapping("delete")
+    public ResponseEntity<String> deleteUser(HttpServletResponse response) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()
+                && !"anonymousUser".equals(authentication.getPrincipal())) {
+            try {
+                SecurityContextHolder.clearContext();
+                Cookie cookie = new Cookie("token", null);
+                cookie.setHttpOnly(true);
+                cookie.setSecure(true);
+                cookie.setPath("/");
+                cookie.setMaxAge(0);
+                response.addCookie(cookie);
+
+                if (userService.deleteUser(authentication.getName()))
+                    return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
+                else
+                    return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+
+            } catch (Exception e) {
+                return new ResponseEntity<>("Failed to delete user", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+        } else {
+            return new ResponseEntity<>("You are not logged in to delete user", HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @PutMapping("change")
+    public ResponseEntity<String> changeUser(@RequestBody CreateUserRequest request, HttpServletResponse response) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()
+                && !"anonymousUser".equals(authentication.getPrincipal())) {
+            String username = SecurityUtil.getSessionUser();
+
+            try {
+                String message = "";
+                if (request.getUsername() != null) {
+                    if (userService.changeUsername(username, request.getUsername()))
+                        message = "username";
+                    else
+                        return new ResponseEntity<>("Failed to change user details", HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+                if (request.getPassword() != null) {
+                    String hashedPassword = passwordEncoder.encode(request.getPassword());
+                    if (userService.changePassword(username, hashedPassword))
+                        message = "password";
+                    else
+                        return new ResponseEntity<>("Failed to change user details", HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+                if (request.getEmail() != null) {
+                    if (userService.changeEmail(username, request.getEmail()))
+                        message = "email";
+                    else
+                        return new ResponseEntity<>("Failed to change user details", HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+
+                return new ResponseEntity<>("Successfully changed " + message, HttpStatus.OK);
+
+            } catch (Exception e) {
+                return new ResponseEntity<>("Failed to change user details", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+        } else {
+            return new ResponseEntity<>("You are not logged in to change user details", HttpStatus.UNAUTHORIZED);
+        }
+    }
+
 }
